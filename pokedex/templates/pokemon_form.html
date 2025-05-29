@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Detalle Pokémon (Solo lectura){% endblock title %}
+
+{% block content %}
+  <div class="card p-4 mt-4">
+    <h2 class="mb-3">Detalles Pokémon</h2>
+    <form>
+      <ul class="list-group">
+        {% for field in form.visible_fields %}
+          <li class="list-group-item">
+            <div class="row align-items-center">
+              <div class="col-sm-4">
+                {{ field.label_tag }}
+              </div>
+              <div class="col-sm-8">
+                {{ field }}
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </form>
+  </div>
+{% endblock content %}
