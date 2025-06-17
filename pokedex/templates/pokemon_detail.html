@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ pokemon.name | capfirst }}{% endblock title %}
+{% block content %}
+    <div class="card">
+        <div class="row g-0">
+            <div class="col-md-4">
+                 {% if pokemon.image %}
+                    <img src="{{ pokemon.image.url }}" class="img-fluid rounded-start" alt="{{ pokemon.name }}">
+                {% else %}
+                    <p class="text-center p-4">No hay imagen disponible</p>
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h2 class="card-title text-capitalize">{{ pokemon.name }}</h2>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Tipo:</strong> {{ pokemon.get_types_display }}</li>
+                        <li class="list-group-item"><strong>Altura:</strong> {{ pokemon.height }} m</li>
+                        <li class="list-group-item"><strong>Peso:</strong> {{ pokemon.weight }} kg</li>
+                        <li class="list-group-item"><strong>Entrenador:</strong> {{ pokemon.trainer.name | default:"Sin entrenador" }}</li>
+                    </ul>
+                     <a href="{% url 'pokedex:index' %}" class="btn btn-secondary mt-3">Volver a la lista</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,13 +1,31 @@
 {% extends "base.html" %}
 {% block title %}Pokédex{% endblock title %}
 {% block content %}
-            <a href="pokemon/add">Añadir Pokémon</a>
-            <p class="p-2">Bienvenido a la Pokédex</p>
-            <ul class="list-group">
-                {% for pokemon in pokemons %}
-                <li class="list-group-item">
-                    <a href="pokemon/{{pokemon.id}}">{{ pokemon | capfirst }}</a>
-                </li>
-                {% endfor %}
-            </ul>
+    <div class="row">
+        {% for pokemon in pokemons %}
+        <div class="col-md-4 mb-4">
+            <div class="card text-center">
+                {% if pokemon.image %}
+                    <img src="{{ pokemon.image.url }}" class="card-img-top" alt="{{ pokemon.name }}" style="padding: 15px; max-height: 300px; object-fit: contain;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title text-capitalize">{{ pokemon.name }}</h5>
+                    <p class="card-text">
+                        <strong>Entrenador:</strong> {{ pokemon.trainer.name | default:"Sin entrenador" }}<br>
+                        <strong>Peso:</strong> {{ pokemon.weight }} kg
+                    </p>
+                    <a href="{% url 'pokedex:pokemon_detail' pokemon.id %}" class="btn btn-primary"><i class="fas fa-eye"></i> Ver</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'pokedex:edit_pokemon' pokemon.id %}" class="btn btn-warning"><i class="fas fa-edit"></i> Editar</a>
+                        <a href="{% url 'pokedex:delete_pokemon' pokemon.id %}" class="btn btn-danger"><i class="fas fa-trash"></i> Eliminar</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col">
+            <p>No hay Pokémon registrados.</p>
+        </div>
+        {% endfor %}
+    </div>
 {% endblock content %}

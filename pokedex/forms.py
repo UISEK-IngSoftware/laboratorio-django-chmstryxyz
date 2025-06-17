@@ -1,61 +1,26 @@
 from django import forms
-from .models import Pokemon
-
-TIPE_CHOICES = [
-    ('normal', 'Normal'),
-    ('fighting', 'Lucha'),
-    ('flying', 'Volador'),
-    ('poison', 'Veneno'),
-    ('ground', 'Tierra'),
-    ('rock', 'Roca'),
-    ('bug', 'Bicho'),
-    ('ghost', 'Fantasma'),
-    ('steel', 'Acero'),
-    ('fire', 'Fuego'),
-    ('water', 'Agua'),
-    ('grass', 'Planta'),
-    ('electric', 'Eléctrico'),
-    ('psychic', 'Psíquico'),
-    ('ice', 'Hielo'),
-    ('dragon', 'Dragón'),
-    ('dark', 'Siniestro'),
-    ('fairy', 'Hada'),
-]
+from .models import Pokemon, Trainer
 
 class PokemonForm(forms.ModelForm):
-    types = forms.ChoiceField(
-        choices=TIPE_CHOICES,
-        widget=forms.Select()
-    )
+    # El campo 'trainer' ahora usará un queryset para mostrar los entrenadores existentes
+    trainer = forms.ModelChoiceField(queryset=Trainer.objects.all(), required=False, label="Entrenador")
 
     class Meta:
         model = Pokemon
         fields = [
-            'name', 'description', 'height', 'weight',
-            'base_experience', 'types', 'abilities', 'stats', 'image'
+            'name', 'types', 'weight', 'height', 'trainer', 'image'
         ]
         widgets = {
-            'description': forms.Textarea(attrs={
-                'rows': 4,
-                'style': 'resize: none;'
-            }),
-            'image': forms.ClearableFileInput(),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'types': forms.Select(attrs={'class': 'form-control'}),
+            'weight': forms.NumberInput(attrs={'class': 'form-control'}),
+            'height': forms.NumberInput(attrs={'class': 'form-control'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
         labels = {
             'name': 'Nombre',
-            'description': 'Descripción',
-            'height': 'Altura (m)',
-            'weight': 'Peso (kg)',
-            'base_experience': 'Experiencia base',
-            'types': 'Tipos',
-            'abilities': 'Habilidades',
-            'stats': 'Estadísticas',
-            'image': 'Imagen',
+            'types': 'Tipo',
+            'weight': 'Peso',
+            'height': 'Altura',
+            'image': 'Fotografía',
         }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.widget.attrs.update({
-                'class': 'form-control',
-            })
