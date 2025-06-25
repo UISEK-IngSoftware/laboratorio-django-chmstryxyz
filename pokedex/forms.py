@@ -2,7 +2,7 @@ from django import forms
 from .models import Pokemon, Trainer
 
 class PokemonForm(forms.ModelForm):
-    # El campo 'trainer' ahora usará un queryset para mostrar los entrenadores existentes
+ 
     trainer = forms.ModelChoiceField(queryset=Trainer.objects.all(), required=False, label="Entrenador")
 
     class Meta:
@@ -23,4 +23,14 @@ class PokemonForm(forms.ModelForm):
             'weight': 'Peso',
             'height': 'Altura',
             'image': 'Fotografía',
+        }
+
+class TrainerForm(forms.ModelForm):
+    class Meta:
+        model = Trainer
+        fields = ['nombre', 'apellido', 'nivel']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'apellido': forms.TextInput(attrs={'class': 'form-control'}),
+            'nivel': forms.NumberInput(attrs={'class': 'form-control'}),
         }

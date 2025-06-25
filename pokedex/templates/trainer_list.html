@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Lista de Entrenadores{% endblock title %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Entrenadores</h2>
+        <a href="{% url 'pokedex:add_trainer' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Añadir Entrenador</a>
+    </div>
+    <ul class="list-group">
+        {% for trainer in trainers %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ trainer.nombre }} {{ trainer.apellido }} (Nivel: {{ trainer.nivel }})
+                <div>
+                    <a href="{% url 'pokedex:edit_trainer' trainer.id %}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'pokedex:delete_trainer' trainer.id %}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                </div>
+            </li>
+        {% empty %}
+            <li class="list-group-item">No hay entrenadores registrados.</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

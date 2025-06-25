@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Pokemon
-from .forms import PokemonForm
+from .models import Pokemon, Trainer
+from .forms import PokemonForm, TrainerForm
 from django.contrib.auth.decorators import login_required # Para proteger vistas
 
 def index(request):
@@ -8,14 +8,12 @@ def index(request):
     return render(request, 'index.html', {'pokemons': pokemons})
 
 def pokemon_detail(request, id: int):
-    # Usamos get_object_or_404 para manejar casos donde el Pokémon no existe
     pokemon = get_object_or_404(Pokemon, pk=id)
     return render(request, 'pokemon_detail.html', {'pokemon': pokemon})
 
-@login_required # Decorador para que solo usuarios logueados accedan
+@login_required 
 def add_pokemon(request):
     if request.method == 'POST':
-        # Pasamos request.POST para datos del form y request.FILES para los archivos
         form = PokemonForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
@@ -41,14 +39,43 @@ def edit_pokemon(request, id: int):
 @login_required
 def delete_pokemon(request, id: int):
     pokemon = get_object_or_404(Pokemon, pk=id)
-    if request.method == 'POST': # Para confirmar la eliminación
+    if request.method == 'POST': 
         pokemon.delete()
         return redirect('pokedex:index')
-    # Idealmente, aquí se mostraría una página de confirmación.
-    # Por simplicidad, lo haremos directo en la vista de lista.
-    # Para hacerlo correctamente, crea un template `confirm_delete.html`.
-    # Aquí un ejemplo de cómo se vería la confirmación en el template de lista:
-    # Se podría usar un modal de Bootstrap para confirmar antes de redirigir a esta URL.
-    # Por ahora, para simplificar, eliminamos directamente.
+
     pokemon.delete()
     return redirect('pokedex:index')
+
+@login_required
+def trainer_list(request):
+    trainers = Trainer.objects.all()
+    return render(request, 'trainer_list.html', {'trainers': trainers})
+
+@login_required
+def add_trainer(request):
+    if request.method == 'POST':
+        form = TrainerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('pokedex:trainer_list')
+    else:
+        form = TrainerForm()
+    return render(request, 'trainer_form.html', {'form': form, 'action': 'Añadir'})
+
+@login_required
+def edit_trainer(request, id):
+    trainer = get_object_or_404(Trainer, pk=id)
+    if request.method == 'POST':
+        form = TrainerForm(request.POST, instance=trainer)
+        if form.is_valid():
+            form.save()
+            return redirect('pokedex:trainer_list')
+    else:
+        form = TrainerForm(instance=trainer)
+    return render(request, 'trainer_form.html', {'form': form, 'action': 'Editar'})
+
+@login_required
+def delete_trainer(request, id):
+    trainer = get_object_or_404(Trainer, pk=id)
+    trainer.delete()
+    return redirect('pokedex:trainer_list')
