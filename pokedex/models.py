@@ -26,5 +26,8 @@ class Pokemon(models.Model):
     trainer = models.ForeignKey(Trainer, on_delete=models.SET_NULL, null=True, blank=True)
     image = models.ImageField(upload_to='pokemon_images/', null=True, blank=True, verbose_name="Fotografía")
 
+    description = models.TextField(blank=True, null=True, verbose_name="Descripción")
+    abilities = models.JSONField(blank=True, null=True, default=list, verbose_name="Habilidades")
+    
     def __str__(self):
         return self.name
