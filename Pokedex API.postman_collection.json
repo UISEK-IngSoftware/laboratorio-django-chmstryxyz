@@ -1,0 +1,379 @@
+{
+	"info": {
+		"_postman_id": "ba923369-d8e6-4d08-91de-7fc44618d6cb",
+		"name": "Pokedex API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46180087",
+		"_collection_link": "https://matias-4449852.postman.co/workspace/9392e099-c2fb-4dc1-8bb2-12d38d43170b/collection/46180087-ba923369-d8e6-4d08-91de-7fc44618d6cb?action=share&source=collection_link&creator=46180087"
+	},
+	"item": [
+		{
+			"name": "Obtener Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {\r",
+							"    var json = pm.response.json();\r",
+							"    if (json.access_token) {\r",
+							"        pm.collectionVariables.set('access_token', json.access_token);\r",
+							"    }\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "{{client_id}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{client_secret}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/o/token/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"o",
+						"token",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Pokemon",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/pokemons/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"pokemons",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Pokemon",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Pikachu\",\r\n  \"type\": \"Electric\",\r\n  \"weight\": 6.0,\r\n  \"height\": 0.4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/pokemons/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"pokemons",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Pokemon",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Pikachu\",\r\n  \"type\": \"Electric\",\r\n  \"weight\": 6.1,\r\n  \"height\": 0.41\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/pokemons/1/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"pokemons",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Pokemon",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/pokemons/1/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"pokemons",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Trainer",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/trainers/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"trainers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Trainer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Ash\",\r\n  \"apellido\": \"Ketchum\",\r\n  \"nivel\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/trainers/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"trainers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Trainer",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Ash\",\r\n  \"apellido\": \"Ketchum\",\r\n  \"nivel\": 11\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/trainers/1/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"trainers",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Trainer",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/trainers/1/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"trainers",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "client_id",
+			"value": "ygJIbg1mCsLs8Y7yPRcCscvX2N6FEFhi6tQY4dDP",
+			"type": "string"
+		},
+		{
+			"key": "client_secret",
+			"value": "n2QPUF3fqVVCjTG6TqkB5gWtDIjFeQUDenJD42WyXABz3Unhw0sgPqJ1XPCaY6KHwCKUcwe0dDCr1t29WS5usI9tNveWxmWqDPsE6vkukHLDrlOVc4YU5I8bt2WXRbny",
+			"type": "string"
+		},
+		{
+			"key": "username",
+			"value": "mati",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "matias123",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
